@@ -26,7 +26,7 @@ const boxShuffle = () => {
     selNum.length = 0;  // 박스 선택 순서 기록 배열 초기화
     for(let i = 1; i <= 9; i++){  // 이미지 초기화
       const chooseImage = document.querySelector(`#box${i}`);
-      chooseImage.innerHTML = `${i}`;
+      chooseImage.innerHTML = "";
     }
   }
   else {
@@ -35,25 +35,34 @@ const boxShuffle = () => {
 };
 
 const show = (chooseNumber) => {
+  if(selNum.indexOf(chooseNumber) != -1) return;
   const chooseImage = document.querySelector(`#box${chooseNumber}`);
   console.log(chooseImage);
   console.log(msg);
   if(shuffleFlag){
     selNum.push(chooseNumber);
+
     console.log(selNum);
   
     if(num[chooseNumber-1]) {
-      msg.innerHTML = "맞음ㅋㅋ";
+      msg.innerHTML = "게임 실패ㅋㅋ";
       shuffleFlag = false;
       chooseImage.innerHTML = `<img src="./images/boom.png">`;
     }
     else {
-      msg.innerHTML = `${++cnt}번 틀림ㅋㅋ`;
+      if(++cnt >= 8) {
+        msg.innerHTML = `★ 게임 성공 ★`;
+        for(let i = 1; i <= 9; i++){
+          document.querySelector(`#box${i}`).innerHTML = `<img src="./images/hart.png">`;
+        }
+        shuffleFlag = false;
+      }
+      else msg.innerHTML = `오ㅋㅋ ${cnt}번째 성공. ${8 - cnt}번만 더 맞추면 게임 성공!!`;
       chooseImage.innerHTML = `<img src="./images/hart.png">`;
     }
   }
   else {
-    msg.innerHTML = "게임이 끝났습니다. 셔플하세요.";
+    msg.innerHTML = "셔플하세요.";
   }  
 };
 
